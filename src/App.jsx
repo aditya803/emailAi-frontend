@@ -48,6 +48,12 @@ function App() {
             {loading ? <CircularProgress size={24}/> : "Generate Reply"}
           </Button>
       </Box>
+
+      {error && (
+        <Typography color='error' sx={{mb:2}}>
+        {error}
+      </Typography>
+      )}
     </Container>
   )
 }
