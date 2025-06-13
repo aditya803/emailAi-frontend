@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import { Box, Button, CircularProgress, Container, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import axios from 'axios';
 
 function App() {
   const[emailContent, setEmailContent] = useState('');
@@ -8,7 +9,22 @@ function App() {
   const[generatedReply, setGeneratedReply] = useState('');
   const[loading, setLoading] = useState(false);
   const[error, setError] = useState('');
-  const handleSubmit = async () => {};
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const response = await axios.post("http://localhost:8080/api/email/generate" , {
+        emailContent,
+        tone
+      });
+      setGeneratedReply(typeof response.data === 'string' ? response.data : JSON.stringify(response.data))
+    } catch (error) {
+      setError('Failed to Generate Reply. Please try again!');
+      console.error(error);
+    } finally{
+      setLoading(false);
+    }   
+  };
 
   return (
     <Container maxWidth="md" sx={{py:4}}>
